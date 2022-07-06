@@ -33,11 +33,14 @@ CREATE TABLE account (
 	CONSTRAINT FK_account_tenmo_user FOREIGN KEY (user_id) REFERENCES tenmo_user (user_id)
 );
 
-CREATE TABLE transactions_account (
+CREATE TABLE transactions (
 	transaction_id serial NOT NULL,
-	account_id int NOT NULL,
-	CONSTRAINT PK_transactions_account PRIMARY KEY(transaction_id),
-	CONSTRAINT FK_transactions_account FOREIGN KEY(account_id) REFERENCES account(account_id)
+	source_account_id int NOT NULL,
+	destination_account_id int NOT NULL,
+	transfer_amount decimal (13,2) NOT NULL,
+	CONSTRAINT PK_transactions PRIMARY KEY(transaction_id),
+	CONSTRAINT FK_transactions_source_account_id FOREIGN KEY(source_account_id) REFERENCES account(account_id),
+	CONSTRAINT FK_transactions_destination_account_id FOREIGN KEY(destination_account_id) REFERENCES account(account_id)
 );
 
 COMMIT;
