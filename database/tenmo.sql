@@ -1,6 +1,6 @@
 BEGIN TRANSACTION;
 
-DROP TABLE IF EXISTS tenmo_user, account;
+DROP TABLE IF EXISTS tenmo_user, account, transactions_account;
 
 DROP SEQUENCE IF EXISTS seq_user_id, seq_account_id;
 
@@ -33,5 +33,10 @@ CREATE TABLE account (
 	CONSTRAINT FK_account_tenmo_user FOREIGN KEY (user_id) REFERENCES tenmo_user (user_id)
 );
 
+CREATE TABLE transactions_account (
+	transaction_id serial NOT NULL,
+	account_id int NOT NULL,
+	CONSTRAINT PK_transactions_account PRIMARY KEY(transaction_id, account_id)
+);
 
 COMMIT;
