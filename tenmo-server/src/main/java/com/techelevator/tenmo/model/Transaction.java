@@ -15,17 +15,24 @@ public class Transaction {
     @NotBlank(message = "TransferredMoney must have a positive value.")
     private BigDecimal transferredMoney;
 
-    public Transaction(int userId, int accountId, BigDecimal transferredMoney) {
+    @NotBlank (message = "Balance must be >= 0.")
+    private BigDecimal balance;
+
+    public Transaction(){}
+
+    public Transaction(int userId, int accountId, BigDecimal transferredMoney, BigDecimal balance) {
         this.userId = userId;
         this.accountId = accountId;
         this.transferredMoney = transferredMoney;
+        this.balance = balance;
     }
 
-    public Transaction(int id, int userId, int accountId, BigDecimal transferredMoney) {
+    public Transaction(int id, int userId, int accountId, BigDecimal transferredMoney, BigDecimal balance) {
         this.id = id;
         this.userId = userId;
         this.accountId = accountId;
         this.transferredMoney = transferredMoney;
+        this.balance = balance;
     }
 
     public int getId() {
@@ -58,6 +65,14 @@ public class Transaction {
 
     public void setTransferredMoney(BigDecimal transferredMoney) {
         this.transferredMoney = transferredMoney;
+    }
+
+    public BigDecimal getBalance() {
+        return balance;
+    }
+
+    public void setBalance(BigDecimal balance) {
+        this.balance = balance;
     }
 
     @Override

@@ -16,6 +16,8 @@ public interface TransactionDao {
 
     List<Transaction> listTransaction();
 
+    Transaction get(int id) throws TransactionNotFoundException;
+
     Transaction increaseBalance(Transaction transaction, int id) throws TransactionNotFoundException;
 
     Transaction decreaseBalance(Transaction transaction, int id) throws TransactionNotFoundException;

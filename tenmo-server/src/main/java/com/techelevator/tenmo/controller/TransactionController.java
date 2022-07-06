@@ -1,20 +1,24 @@
 package com.techelevator.tenmo.controller;
 
 import com.techelevator.tenmo.dao.TransactionDao;
+import com.techelevator.tenmo.exception.AccountNotFoundException;
+import com.techelevator.tenmo.exception.TransactionNotFoundException;
 import com.techelevator.tenmo.model.Transaction;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.List;
 
+@PreAuthorize("permitAll")
+@RestController
 public class TransactionController {
+
     private TransactionDao dao;
-    @RequestMapping(path = "/transactions", method = RequestMethod.POST)
-    public Transaction addTransaction(@RequestBody @Valid Transaction transfer){
-        return null;
+
+    @GetMapping(path = "/transactions/{id}")
+    public Transaction get(@PathVariable int id) throws TransactionNotFoundException{
+        return dao.get(id);
     }
 
     @RequestMapping(method = RequestMethod.GET)
@@ -24,4 +28,23 @@ public class TransactionController {
         }
         return dao.listTransaction();
     }
+
+//    @PutMapping
+//    public Transaction increaseBalance(@Valid @RequestBody Transaction transaction, @PathVariable int accountId)
+//            throws TransactionNotFoundException{
+//        return dao.increaseBalance(transaction, accountId);
+//    }
+
+    // changeBalance (userId, accountId, transactionId)
+    // newCurrentUserBalance = currentUser - transferAmount
+    // newOtherUserBalance = otherUser + transferAmount
+
+    // need to reduce users balance when transfer made to a different user
+//
+//    @PutMapping
+//    public Transaction decreaseBalance(@Valid @RequestBody Transaction transaction, @PathVariable int accountId)
+//            throws TransactionNotFoundException{
+//        return dao.decreaseBalance(transaction, accountId);
+//    }
+
 }
