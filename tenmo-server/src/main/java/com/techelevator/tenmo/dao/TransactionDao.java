@@ -10,15 +10,11 @@ import java.util.List;
 
 public interface TransactionDao {
 
-//    public static List<User> users = new ArrayList<>();
-
-//    public TransactionDao() {
-//        if (users.size() == 0) {
-//            set.Transactions
-//        }
-//    }
-
     List<User> list();
+
+    List<Transaction> listTransaction(int accountId);
+
+    List<Transaction> listTransaction();
 
     Transaction increaseBalance(Transaction transaction, int id) throws TransactionNotFoundException;
 
@@ -28,5 +24,12 @@ public interface TransactionDao {
 
     Transaction seeAccountBalance(Transaction transaction, int id, int accountId) throws AccountNotFoundException;
 
-
 }
+
+//    public static List<User> users = new ArrayList<>();
+
+//    public TransactionDao() {
+//        if (users.size() == 0) {
+//            set.Transactions
+//        }
+//    }
