@@ -36,7 +36,8 @@ CREATE TABLE account (
 CREATE TABLE transactions_account (
 	transaction_id serial NOT NULL,
 	account_id int NOT NULL,
-	CONSTRAINT PK_transactions_account PRIMARY KEY(transaction_id, account_id)
+	CONSTRAINT PK_transactions_account PRIMARY KEY(transaction_id),
+	CONSTRAINT FK_transactions_account FOREIGN KEY(account_id) REFERENCES account(account_id)
 );
 
 COMMIT;
