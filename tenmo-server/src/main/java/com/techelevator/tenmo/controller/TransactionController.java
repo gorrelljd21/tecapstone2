@@ -4,6 +4,7 @@ import com.techelevator.tenmo.dao.TransactionDao;
 import com.techelevator.tenmo.exception.AccountNotFoundException;
 import com.techelevator.tenmo.exception.TransactionNotFoundException;
 import com.techelevator.tenmo.model.Transaction;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
@@ -21,14 +22,29 @@ public class TransactionController {
         this.dao = transactionDao;
     }
 
+    //I need to be able to see my Account Balance.
     @GetMapping(path = "/accounts/{id}")
     public BigDecimal getBalance(@PathVariable int id) throws AccountNotFoundException{
         return dao.getBalance(id);
     }
 
+    //I need to be able to send a transfer of a specific amount of TE Bucks to a registered user
+    @PostMapping(path = "/transactions/transfer")
+    public int transfer(@RequestBody @Valid Transaction transaction) throws TransactionNotFoundException{
+        return dao.transfer(transaction);
+    }
 
-    //post that takes fromuser to make sure its legit and covers business rules
-    //insert transaction from table to table
+    //TODO create error catch for this
+    //I must not be allowed to send money to myself.
+//    @ResponseStatus(code = HttpStatus.FORBIDDEN)
+//    @PostMapping()
+    // CATCH(fromUserId != toUserId) maybe
+
+
+
+
+
+
 
 //    @RequestMapping(method = RequestMethod.GET)
 //    public List<Transaction> list(@RequestParam(defaultValue = "0") int accountId) {

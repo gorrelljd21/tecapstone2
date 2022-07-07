@@ -1,6 +1,8 @@
 package com.techelevator.tenmo.model;
 
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Positive;
 import java.math.BigDecimal;
 import java.util.Objects;
@@ -9,13 +11,13 @@ public class Transaction {
 
     private int id;
 
-    @Positive(message = "fromUserId can't be negative.")
+//TODO find annotations for these
     private int fromUserId;
 
-    @Positive(message = "toUserId can't be negative.")
+
     private int toUserId;
 
-    @NotBlank(message = "TransferredMoney must have a positive value.")
+    @Positive(message = "TransferredMoney must have a positive value.")
     private BigDecimal transferredMoney;
 
     public Transaction(){}

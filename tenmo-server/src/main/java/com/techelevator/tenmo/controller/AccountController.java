@@ -23,20 +23,22 @@ public class AccountController {
         this.dao = accountDao;
     }
 
-    @PostMapping(path = "/accounts")
-    public Transaction transferId(@RequestBody @Valid Transaction transaction){
 
-    }
 
-    @GetMapping(path = "/accounts")
-    public List<Account> listOfAccounts(@RequestParam(defaultValue = "0") int accountId) throws AccountNotFoundException {
-        return dao.listOfAccounts(accountId);
-    }
+//    @PostMapping(path = "/accounts")
+//    public Transaction transferId(@RequestBody @Valid Transaction transaction){
+//
+//    }
 
-    @GetMapping(path = "/accounts/{userId}")
-    public List<User> getUserId(@PathVariable int userId) throws AccountNotFoundException {
-        return dao.listOfUsers(userId);
-    }
+//    @GetMapping(path = "/accounts")
+//    public List<Account> listOfAccounts(@RequestParam(defaultValue = "0") int accountId) throws AccountNotFoundException {
+//        return dao.listOfAccounts(accountId);
+//    }
+
+//    @GetMapping(path = "/accounts/{userId}")
+//    public List<User> getUserId(@PathVariable int userId) throws AccountNotFoundException {
+//        return dao.listOfAccounts(userId);
+//    }
 
 
 }

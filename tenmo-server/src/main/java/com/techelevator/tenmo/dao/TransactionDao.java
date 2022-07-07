@@ -13,6 +13,10 @@ public interface TransactionDao {
 
     BigDecimal getBalance(int accountId) throws AccountNotFoundException;
 
+    int getTransaction(int transaction_id) throws TransactionNotFoundException;
+
+    int transfer(Transaction transaction) throws TransactionNotFoundException;
+
 }
 
 //    public static List<User> users = new ArrayList<>();

@@ -42,5 +42,4 @@ CREATE TABLE transaction (
 	CONSTRAINT FK_transaction_source_user_id FOREIGN KEY(source_user_id) REFERENCES tenmo_user(user_id),
 	CONSTRAINT FK_transaction_destination_user_id FOREIGN KEY(destination_user_id) REFERENCES tenmo_user(user_id)
 );
-
 COMMIT;
