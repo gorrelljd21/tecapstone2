@@ -8,6 +8,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.math.BigDecimal;
 import java.util.List;
 
 @PreAuthorize("permitAll")
@@ -16,18 +17,27 @@ public class TransactionController {
 
     private TransactionDao dao;
 
-    @GetMapping(path = "/transactions/{id}")
-    public Transaction get(@PathVariable int id) throws TransactionNotFoundException{
-        return dao.get(id);
+    public TransactionController(TransactionDao transactionDao){
+        this.dao = transactionDao;
     }
 
-    @RequestMapping(method = RequestMethod.GET)
-    public List<Transaction> list(@RequestParam(defaultValue = "0") int accountId) {
-        if (accountId > 0) {
-            return dao.listTransaction(accountId);
-        }
-        return dao.listTransaction();
+    @GetMapping(path = "/accounts/{id}")
+    public BigDecimal getBalance(@PathVariable int id) throws AccountNotFoundException{
+        return dao.getBalance(id);
     }
+
+    
+
+    //post that takes fromuser to make sure its legit and covers business rules
+    //insert transaction from table to table
+
+//    @RequestMapping(method = RequestMethod.GET)
+//    public List<Transaction> list(@RequestParam(defaultValue = "0") int accountId) {
+//        if (accountId > 0) {
+//            return dao.listTransaction(accountId);
+//        }
+//        return dao.listTransaction();
+//    }
 
 //    @PutMapping
 //    public Transaction increaseBalance(@Valid @RequestBody Transaction transaction, @PathVariable int accountId)

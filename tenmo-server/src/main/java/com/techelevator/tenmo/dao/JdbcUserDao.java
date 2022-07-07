@@ -72,8 +72,9 @@ public class JdbcUserDao implements UserDao {
                 " values (?, ?) returning account_id;";
         Integer newAccountId;
         try {
-            newAccountId = jdbcTemplate.update(thousandSql, Integer.class, newUserId, new BigDecimal("1000"));
+            newAccountId = jdbcTemplate.queryForObject(thousandSql, Integer.class, newUserId, new BigDecimal("1000"));
         } catch (DataAccessException e) {
+            System.out.println("Error " + e.getMessage());
             return false;
         }
         return true;

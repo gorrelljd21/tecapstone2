@@ -1,38 +1,37 @@
 package com.techelevator.tenmo.model;
 
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Positive;
 import java.math.BigDecimal;
+import java.util.Objects;
 
 public class Transaction {
 
     private int id;
-    @NotBlank(message = "UserId can't be blank.")
-    private int userId;
 
-    @NotBlank(message = "AccountId can't be blank.")
-    private int accountId;
+    @Positive(message = "fromUserId can't be negative.")
+    private int fromUserId;
+
+    @Positive(message = "toUserId can't be negative.")
+    private int toUserId;
 
     @NotBlank(message = "TransferredMoney must have a positive value.")
     private BigDecimal transferredMoney;
 
-    @NotBlank (message = "Balance must be >= 0.")
-    private BigDecimal balance;
-
     public Transaction(){}
 
-    public Transaction(int userId, int accountId, BigDecimal transferredMoney, BigDecimal balance) {
-        this.userId = userId;
-        this.accountId = accountId;
+    public Transaction(int fromUserId, int toUserId, BigDecimal transferredMoney) {
+        this.fromUserId = fromUserId;
+        this.toUserId = toUserId;
         this.transferredMoney = transferredMoney;
-        this.balance = balance;
     }
 
-    public Transaction(int id, int userId, int accountId, BigDecimal transferredMoney, BigDecimal balance) {
+    public Transaction(int id, int fromUserId, int toUserId, BigDecimal transferredMoney, BigDecimal balance) {
         this.id = id;
-        this.userId = userId;
-        this.accountId = accountId;
+        this.fromUserId = fromUserId;
+        this.toUserId = toUserId;
         this.transferredMoney = transferredMoney;
-        this.balance = balance;
+
     }
 
     public int getId() {
@@ -43,20 +42,20 @@ public class Transaction {
         this.id = id;
     }
 
-    public int getUserId() {
-        return userId;
+    public int getFromUserId() {
+        return fromUserId;
     }
 
-    public void setUserId(int userId) {
-        this.userId = userId;
+    public void setFromUserId(int fromUserId) {
+        this.fromUserId = fromUserId;
     }
 
-    public int getAccountId() {
-        return accountId;
+    public int getToUserId() {
+        return toUserId;
     }
 
-    public void setAccountId(int accountId) {
-        this.accountId = accountId;
+    public void setToUserId(int toUserId) {
+        this.toUserId = toUserId;
     }
 
     public BigDecimal getTransferredMoney() {
@@ -67,32 +66,28 @@ public class Transaction {
         this.transferredMoney = transferredMoney;
     }
 
-    public BigDecimal getBalance() {
-        return balance;
-    }
-
-    public void setBalance(BigDecimal balance) {
-        this.balance = balance;
-    }
-
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        Transaction transaction = (Transaction) o;
-        return id == transaction.id && userId == transaction.userId &&
-                accountId == transaction.accountId &&
-                transferredMoney == transaction.transferredMoney;
+        Transaction that = (Transaction) o;
+        return id == that.id && fromUserId == that.fromUserId && toUserId == that.toUserId
+                && Objects.equals(transferredMoney, that.transferredMoney);
     }
 
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, fromUserId, toUserId, transferredMoney);
+    }
 
-    @java.lang.Override
-    public java.lang.String toString() {
-        return "Transaction{" + "id= " + id
-                + ", userId= " + userId
-                + ", accountId= " + accountId
-                + ", transferredMoney= " + transferredMoney
-                + "}";
+    @Override
+    public String toString() {
+        return "Transaction{" +
+                "id=" + id +
+                ", fromUserId=" + fromUserId +
+                ", toUserId=" + toUserId +
+                ", transferredMoney=" + transferredMoney +
+                '}';
     }
 }
 
