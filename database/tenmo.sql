@@ -1,6 +1,6 @@
 BEGIN TRANSACTION;
 
-DROP TABLE IF EXISTS tenmo_user, account, transactions_account;
+DROP TABLE IF EXISTS tenmo_user, account, transaction CASCADE;
 
 DROP SEQUENCE IF EXISTS seq_user_id, seq_account_id;
 
@@ -33,14 +33,14 @@ CREATE TABLE account (
 	CONSTRAINT FK_account_tenmo_user FOREIGN KEY (user_id) REFERENCES tenmo_user (user_id)
 );
 
-CREATE TABLE transactions (
+CREATE TABLE transaction (
 	transaction_id serial NOT NULL,
-	source_account_id int NOT NULL,
-	destination_account_id int NOT NULL,
+	source_user_id int NOT NULL,
+	destination_user_id int NOT NULL,
 	transfer_amount decimal (13,2) NOT NULL,
-	CONSTRAINT PK_transactions PRIMARY KEY(transaction_id),
-	CONSTRAINT FK_transactions_source_account_id FOREIGN KEY(source_account_id) REFERENCES account(account_id),
-	CONSTRAINT FK_transactions_destination_account_id FOREIGN KEY(destination_account_id) REFERENCES account(account_id)
+	CONSTRAINT PK_transaction PRIMARY KEY(transaction_id),
+	CONSTRAINT FK_transaction_source_user_id FOREIGN KEY(source_user_id) REFERENCES tenmo_user(user_id),
+	CONSTRAINT FK_transaction_destination_user_id FOREIGN KEY(destination_user_id) REFERENCES tenmo_user(user_id)
 );
 
 COMMIT;
