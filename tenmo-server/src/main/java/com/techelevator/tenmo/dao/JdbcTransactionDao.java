@@ -34,22 +34,9 @@ public class JdbcTransactionDao implements TransactionDao {
 
     private Transaction mapRowToTransaction(SqlRowSet result) {
         Transaction transaction = new Transaction();
-        transaction.setAccountId(result.getInt("account_id"));
-        transaction.setUserId(result.getInt("user_id"));
-//        transaction.setTransferredMoney(result.getBigDecimal("transferred_money"));
-        transaction.setBalance(result.getBigDecimal("balance"));
+        transaction.setFromUserId(result.getInt("fromUserId"));
+        transaction.setToUserId(result.getInt("toUserId"));
+        transaction.setTransferredMoney(result.getBigDecimal("transferred_money"));
         return transaction;
     }
-
-//    private User mapRowToUser(SqlRowSet rs) {
-//        User user = new User();
-//        user.setId(rs.getLong("user_id"));
-//        user.setUsername(rs.getString("username"));
-//        user.setPassword(rs.getString("password_hash"));
-//        user.setActivated(true);
-//        user.setAuthorities("USER");
-//        return user;
-//    }
-
-
 }

@@ -26,7 +26,6 @@ public class TransactionController {
         return dao.getBalance(id);
     }
 
-    
 
     //post that takes fromuser to make sure its legit and covers business rules
     //insert transaction from table to table
