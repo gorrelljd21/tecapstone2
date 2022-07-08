@@ -4,6 +4,7 @@ import com.techelevator.tenmo.dao.TransactionDao;
 import com.techelevator.tenmo.exception.AccountNotFoundException;
 import com.techelevator.tenmo.exception.TransactionNotFoundException;
 import com.techelevator.tenmo.model.Transaction;
+import org.springframework.data.jdbc.repository.query.Modifying;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
@@ -29,7 +30,8 @@ public class TransactionController {
     }
 
     //I need to be able to send a transfer of a specific amount of TE Bucks to a registered user
-    @PostMapping(path = "/transactions/transfer")
+    @ResponseStatus(HttpStatus.CREATED)
+    @PostMapping(path = "/transaction/makeTransfer")
     public int transfer(@RequestBody @Valid Transaction transaction) throws TransactionNotFoundException{
         return dao.transfer(transaction);
     }

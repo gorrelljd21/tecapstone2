@@ -5,6 +5,7 @@ import com.techelevator.tenmo.exception.TransactionNotFoundException;
 import com.techelevator.tenmo.model.Transaction;
 import com.techelevator.tenmo.model.User;
 import org.springframework.dao.DataAccessException;
+import org.springframework.data.jdbc.repository.query.Modifying;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.support.rowset.SqlRowSet;
 import org.springframework.stereotype.Component;
@@ -46,23 +47,24 @@ public class JdbcTransactionDao implements TransactionDao {
     //I need to be able to send a transfer of a specific amount of TE Bucks to a registered user.
     public int transfer(Transaction transaction) throws TransactionNotFoundException {
         try {
-            String transferSql =
+            String updateSql =
                             " update account set balance = balance - ? where user_id = ?;" +
-                            " update account set balance = balance + ? where user_id = ?;" +
+                            " update account set balance = balance + ? where user_id = ?;";
+            jdbcTemplate.update(updateSql, transaction.getTransferredMoney(),
+                    transaction.getFromUserId(), transaction.getTransferredMoney(), transaction.getToUserId());
+
+            String transferSql =
                             " insert into transaction (source_user_id, destination_user_id, transfer_amount)" +
                             "  values (?, ?, ?) returning transaction_id;";
-            Integer result = jdbcTemplate.queryForObject(transferSql, Integer.class, transaction.getTransferredMoney(),
-                    transaction.getFromUserId(), transaction.getTransferredMoney(), transaction.getToUserId(),
+            Integer result = jdbcTemplate.queryForObject(transferSql, Integer.class,
                     transaction.getFromUserId(), transaction.getToUserId(), transaction.getTransferredMoney());
 
-            return getTransaction(result);
+            return result;
         } catch (DataAccessException e) {
             System.out.println(e.getMessage());
             throw e;
         }
     }
-
-
 }
 
 //    private Transaction mapRowToTransaction(SqlRowSet result) {
