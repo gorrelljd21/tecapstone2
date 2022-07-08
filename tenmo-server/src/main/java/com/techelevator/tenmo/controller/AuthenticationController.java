@@ -24,7 +24,7 @@ import org.springframework.web.server.ResponseStatusException;
 /**
  * Controller to authenticate users.
  */
-@PreAuthorize("permitAll")
+@PreAuthorize("isAuthenticated()")
 @RestController
 public class AuthenticationController {
 
@@ -38,6 +38,7 @@ public class AuthenticationController {
         this.userDao = userDao;
     }
 
+    @PreAuthorize("permitAll")
     @RequestMapping(value = "/login", method = RequestMethod.POST)
     public LoginResponse login(@Valid @RequestBody LoginDTO loginDto) {
 
@@ -53,6 +54,7 @@ public class AuthenticationController {
         return new LoginResponse(jwt, user);
     }
 
+    @PreAuthorize("permitAll")
     @ResponseStatus(HttpStatus.CREATED)
     @RequestMapping(value = "/register", method = RequestMethod.POST)
     public void register(@Valid @RequestBody RegisterUserDTO newUser) {

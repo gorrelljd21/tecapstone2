@@ -17,6 +17,7 @@ public interface TransactionDao {
 
     int transfer(Transaction transaction) throws TransactionNotFoundException;
 
+    Transaction showTransfersById(int id) throws TransactionNotFoundException;
 
 }
 

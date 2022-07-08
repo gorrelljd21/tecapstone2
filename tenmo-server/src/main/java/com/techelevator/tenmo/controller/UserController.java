@@ -10,9 +10,10 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.security.Principal;
 import java.util.List;
 
-@PreAuthorize("permitAll")
+@PreAuthorize("isAuthenticated()")
 @RestController
 public class UserController {
 
@@ -22,7 +23,7 @@ public class UserController {
         this.dao = userDao;
     }
 
-    //See the list of users
+    @PreAuthorize("permitAll")
     @GetMapping(path = "/users")
     public List<User> list(@RequestParam(defaultValue = "") String username){
         if(username.equalsIgnoreCase("")){
@@ -32,10 +33,9 @@ public class UserController {
     }
 
     //I should be able to choose from a list of users to send TE Bucks to.
-    @GetMapping(path = "users/{username}")
-    public int selectUser(@PathVariable String username) throws UserNotFoundException {
-        return dao.findIdByUsername(username);
+    //TODO lock down
+    @GetMapping(path = "/users/{username}")
+    public int selectUser(@PathVariable String username, Principal principal) throws UserNotFoundException {
+        return dao.findIdByUsername(principal.getName());
     }
-
-
 }

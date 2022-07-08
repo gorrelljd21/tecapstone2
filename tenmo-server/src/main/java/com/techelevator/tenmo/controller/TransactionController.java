@@ -3,6 +3,7 @@ package com.techelevator.tenmo.controller;
 import com.techelevator.tenmo.dao.AccountDao;
 import com.techelevator.tenmo.dao.JdbcAccountDao;
 import com.techelevator.tenmo.dao.TransactionDao;
+import com.techelevator.tenmo.dao.UserDao;
 import com.techelevator.tenmo.exception.AccountNotFoundException;
 import com.techelevator.tenmo.exception.FromUserIdsMatchException;
 import com.techelevator.tenmo.exception.InsufficientFundsException;
@@ -25,19 +26,22 @@ public class TransactionController {
 
     private TransactionDao dao;
     private AccountDao accountDao;
+    private UserDao userDao;
 
-    public TransactionController(TransactionDao transactionDao, AccountDao accountDao) {
+    public TransactionController(TransactionDao transactionDao, AccountDao accountDao, UserDao userDao) {
         this.dao = transactionDao;
         this.accountDao = accountDao;
+        this.userDao = userDao;
     }
 
     //I need to be able to see my Account Balance.
-    @GetMapping(path = "/accounts/{id}")
-    public BigDecimal getBalance(@PathVariable int id) throws AccountNotFoundException {
-        return dao.getBalance(id);
+    @GetMapping(path = "/accounts")
+    public BigDecimal getBalance(Principal principal) throws AccountNotFoundException {
+        return dao.getBalance(userDao.findIdByUsername(principal.getName()));
     }
 
     //I need to be able to send a transfer of a specific amount of TE Bucks to a registered user
+    //TODO lock down
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping(path = "/transaction/makeTransfer")
     public int transfer(@RequestBody @Valid Transaction transaction, Principal principal)
@@ -58,6 +62,13 @@ public class TransactionController {
         return dao.transfer(transaction);
     }
 
+    //I need to be able to retrieve the details of any transfer based upon the transfer ID
+    //TODO lock down
+    @GetMapping(path = "/transaction/{id}")
+    public Transaction transactionId(@PathVariable int id) throws TransactionNotFoundException {
+        return dao.showTransfersById(id);
+    }
 
-
+    //WHY ARE YOU NUUUULLLLULULULULULUL
 }
+

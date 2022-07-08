@@ -20,7 +20,7 @@ public class Transaction {
     @Positive(message = "TransferredMoney must have a positive value.")
     private BigDecimal transferredMoney;
 
-    private BigDecimal balance;
+    private String status;
 
     public Transaction(){}
 
@@ -70,12 +70,12 @@ public class Transaction {
         this.transferredMoney = transferredMoney;
     }
 
-    public BigDecimal getBalance() {
-        return balance;
+    public String getStatus() {
+        return status;
     }
 
-    public void setBalance(BigDecimal balance) {
-        this.balance = balance;
+    public void setStatus(String status) {
+        this.status = status;
     }
 
     @Override
@@ -83,12 +83,13 @@ public class Transaction {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Transaction that = (Transaction) o;
-        return id == that.id && fromUserId == that.fromUserId && toUserId == that.toUserId && Objects.equals(transferredMoney, that.transferredMoney) && Objects.equals(balance, that.balance);
+        return id == that.id && fromUserId == that.fromUserId &&
+                toUserId == that.toUserId && Objects.equals(transferredMoney, that.transferredMoney) && Objects.equals(status, that.status);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, fromUserId, toUserId, transferredMoney, balance);
+        return Objects.hash(id, fromUserId, toUserId, transferredMoney, status);
     }
 
     @Override
@@ -98,7 +99,7 @@ public class Transaction {
                 ", fromUserId=" + fromUserId +
                 ", toUserId=" + toUserId +
                 ", transferredMoney=" + transferredMoney +
-                ", balance=" + balance +
+                ", status='" + status + '\'' +
                 '}';
     }
 }
