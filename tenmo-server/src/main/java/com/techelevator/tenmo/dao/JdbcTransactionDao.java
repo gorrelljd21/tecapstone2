@@ -54,10 +54,10 @@ public class JdbcTransactionDao implements TransactionDao {
                     transaction.getFromUserId(), transaction.getTransferredMoney(), transaction.getToUserId());
 
             String transferSql =
-                            " insert into transaction (source_user_id, destination_user_id, transfer_amount)" +
-                            "  values (?, ?, ?) returning transaction_id;";
+                            " insert into transaction (source_user_id, destination_user_id, transfer_amount, status)" +
+                            "  values (?, ?, ?, ?) returning transaction_id;";
             Integer result = jdbcTemplate.queryForObject(transferSql, Integer.class,
-                    transaction.getFromUserId(), transaction.getToUserId(), transaction.getTransferredMoney());
+                    transaction.getFromUserId(), transaction.getToUserId(), transaction.getTransferredMoney(), "Approved");
 
             return result;
         } catch (DataAccessException e) {

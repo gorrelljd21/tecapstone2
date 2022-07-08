@@ -14,7 +14,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Component
-public class JdbcAccountDao implements AccountDao{
+public class JdbcAccountDao implements AccountDao {
 
     private JdbcTemplate jdbcTemplate;
 
@@ -24,16 +24,17 @@ public class JdbcAccountDao implements AccountDao{
     }
 
     //To get all users
-    public List<Account> listOfAccounts(int accountId){
+    public List<Account> listOfAccounts(int accountId) {
         List<Account> accounts = new ArrayList<>();
         String getUsersSql =
                 "select user_id, username from tenmo_user";
         SqlRowSet results = jdbcTemplate.queryForRowSet(getUsersSql);
-        while (results.next()){
+        while (results.next()) {
             accounts.add(mapToRowUsers(results));
         }
         return accounts;
     }
+
     // To get a single account
     public Account get(int accountId) throws AccountNotFoundException {
         List<Account> accounts = new ArrayList<>();
@@ -45,7 +46,19 @@ public class JdbcAccountDao implements AccountDao{
         throw new AccountNotFoundException();
     }
 
-    public Account mapToRowUsers(SqlRowSet result){
+    //I can't send more TE Bucks than I have in my account.
+    public BigDecimal getBalanceByUsername(String username) throws AccountNotFoundException {
+        String getBalanceByUsernameSql =
+                "select balance " +
+                        " from account as a" +
+                        " join tenmo_user as tu on a.user_id = tu.user_id" +
+                        " where username ILIKE ?";
+        BigDecimal balanceByUsername = jdbcTemplate.queryForObject(getBalanceByUsernameSql, BigDecimal.class, username);
+        return balanceByUsername;
+    }
+
+
+    public Account mapToRowUsers(SqlRowSet result) {
         Account account = new Account();
 
         account.setAccountId(result.getInt("account_id"));

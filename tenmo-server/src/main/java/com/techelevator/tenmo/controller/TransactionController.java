@@ -1,8 +1,13 @@
 package com.techelevator.tenmo.controller;
 
+import com.techelevator.tenmo.dao.AccountDao;
+import com.techelevator.tenmo.dao.JdbcAccountDao;
 import com.techelevator.tenmo.dao.TransactionDao;
 import com.techelevator.tenmo.exception.AccountNotFoundException;
+import com.techelevator.tenmo.exception.FromUserIdsMatchException;
+import com.techelevator.tenmo.exception.InsufficientFundsException;
 import com.techelevator.tenmo.exception.TransactionNotFoundException;
+import com.techelevator.tenmo.model.Account;
 import com.techelevator.tenmo.model.Transaction;
 import org.springframework.data.jdbc.repository.query.Modifying;
 import org.springframework.http.HttpStatus;
@@ -11,67 +16,48 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.math.BigDecimal;
+import java.security.Principal;
 import java.util.List;
 
-@PreAuthorize("permitAll")
+@PreAuthorize("isAuthenticated()")
 @RestController
 public class TransactionController {
 
     private TransactionDao dao;
+    private AccountDao accountDao;
 
-    public TransactionController(TransactionDao transactionDao){
+    public TransactionController(TransactionDao transactionDao, AccountDao accountDao) {
         this.dao = transactionDao;
+        this.accountDao = accountDao;
     }
 
     //I need to be able to see my Account Balance.
     @GetMapping(path = "/accounts/{id}")
-    public BigDecimal getBalance(@PathVariable int id) throws AccountNotFoundException{
+    public BigDecimal getBalance(@PathVariable int id) throws AccountNotFoundException {
         return dao.getBalance(id);
     }
 
     //I need to be able to send a transfer of a specific amount of TE Bucks to a registered user
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping(path = "/transaction/makeTransfer")
-    public int transfer(@RequestBody @Valid Transaction transaction) throws TransactionNotFoundException{
+    public int transfer(@RequestBody @Valid Transaction transaction, Principal principal)
+            throws TransactionNotFoundException, InsufficientFundsException, FromUserIdsMatchException {
+
+        //I can't send more TE Bucks than I have in my account.
+        int verifyAmountFromUser = (transaction.getTransferredMoney().compareTo(accountDao.getBalanceByUsername(principal.getName())));
+
+        if (verifyAmountFromUser > 0) {
+            throw new InsufficientFundsException();
+        }
+
+        if (transaction.getFromUserId() == transaction.getToUserId()) {
+            throw new FromUserIdsMatchException();
+        }
+
+        System.out.println("Approved.");
         return dao.transfer(transaction);
     }
 
-    //TODO create error catch for this
-    //I must not be allowed to send money to myself.
-//    @ResponseStatus(code = HttpStatus.FORBIDDEN)
-//    @PostMapping()
-    // CATCH(fromUserId != toUserId) maybe
 
-
-
-
-
-
-
-//    @RequestMapping(method = RequestMethod.GET)
-//    public List<Transaction> list(@RequestParam(defaultValue = "0") int accountId) {
-//        if (accountId > 0) {
-//            return dao.listTransaction(accountId);
-//        }
-//        return dao.listTransaction();
-//    }
-
-//    @PutMapping
-//    public Transaction increaseBalance(@Valid @RequestBody Transaction transaction, @PathVariable int accountId)
-//            throws TransactionNotFoundException{
-//        return dao.increaseBalance(transaction, accountId);
-//    }
-
-    // changeBalance (userId, accountId, transactionId)
-    // newCurrentUserBalance = currentUser - transferAmount
-    // newOtherUserBalance = otherUser + transferAmount
-
-    // need to reduce users balance when transfer made to a different user
-//
-//    @PutMapping
-//    public Transaction decreaseBalance(@Valid @RequestBody Transaction transaction, @PathVariable int accountId)
-//            throws TransactionNotFoundException{
-//        return dao.decreaseBalance(transaction, accountId);
-//    }
 
 }

@@ -14,11 +14,13 @@ public class Transaction {
 //TODO find annotations for these
     private int fromUserId;
 
-
     private int toUserId;
 
+    //I can't send a zero or negative amount.
     @Positive(message = "TransferredMoney must have a positive value.")
     private BigDecimal transferredMoney;
+
+    private BigDecimal balance;
 
     public Transaction(){}
 
@@ -68,18 +70,25 @@ public class Transaction {
         this.transferredMoney = transferredMoney;
     }
 
+    public BigDecimal getBalance() {
+        return balance;
+    }
+
+    public void setBalance(BigDecimal balance) {
+        this.balance = balance;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Transaction that = (Transaction) o;
-        return id == that.id && fromUserId == that.fromUserId && toUserId == that.toUserId
-                && Objects.equals(transferredMoney, that.transferredMoney);
+        return id == that.id && fromUserId == that.fromUserId && toUserId == that.toUserId && Objects.equals(transferredMoney, that.transferredMoney) && Objects.equals(balance, that.balance);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, fromUserId, toUserId, transferredMoney);
+        return Objects.hash(id, fromUserId, toUserId, transferredMoney, balance);
     }
 
     @Override
@@ -89,6 +98,7 @@ public class Transaction {
                 ", fromUserId=" + fromUserId +
                 ", toUserId=" + toUserId +
                 ", transferredMoney=" + transferredMoney +
+                ", balance=" + balance +
                 '}';
     }
 }

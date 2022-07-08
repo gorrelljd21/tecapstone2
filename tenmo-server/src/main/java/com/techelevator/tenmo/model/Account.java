@@ -15,6 +15,8 @@ public class Account {
     @Positive(message = "balance must be a positive value.")
     BigDecimal balance;
 
+
+
     public Account() {}
 
     public Account(int accountId, BigDecimal balance){
@@ -37,6 +39,7 @@ public class Account {
     public void setBalance(BigDecimal balance) {
         this.balance = balance;
     }
+
 
     @Override
     public boolean equals(Object o) {

@@ -17,6 +17,7 @@ public interface TransactionDao {
 
     int transfer(Transaction transaction) throws TransactionNotFoundException;
 
+
 }
 
 //    public static List<User> users = new ArrayList<>();

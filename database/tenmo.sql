@@ -38,8 +38,10 @@ CREATE TABLE transaction (
 	source_user_id int NOT NULL,
 	destination_user_id int NOT NULL,
 	transfer_amount decimal (13,2) NOT NULL,
+	status varchar(15) NOT NULL,
 	CONSTRAINT PK_transaction PRIMARY KEY(transaction_id),
 	CONSTRAINT FK_transaction_source_user_id FOREIGN KEY(source_user_id) REFERENCES tenmo_user(user_id),
-	CONSTRAINT FK_transaction_destination_user_id FOREIGN KEY(destination_user_id) REFERENCES tenmo_user(user_id)
+	CONSTRAINT FK_transaction_destination_user_id FOREIGN KEY(destination_user_id) REFERENCES tenmo_user(user_id),
+	CONSTRAINT CK_transaction_user_ids CHECK (source_user_id != destination_user_id) 
 );
 COMMIT;
