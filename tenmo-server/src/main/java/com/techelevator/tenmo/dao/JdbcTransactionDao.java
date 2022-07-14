@@ -9,6 +9,7 @@ import org.springframework.jdbc.support.rowset.SqlRowSet;
 import org.springframework.stereotype.Component;
 
 import java.math.BigDecimal;
+import java.security.Principal;
 
 @Component
 public class JdbcTransactionDao implements TransactionDao {
@@ -51,7 +52,7 @@ public class JdbcTransactionDao implements TransactionDao {
 
             String transferSql =
                     " insert into transaction (source_user_id, destination_user_id, transfer_amount, status)" +
-                            "  values (?, ?, ?, ?) returning transaction_id;";
+                            " values (?, ?, ?, ?) returning transaction_id;";
             Integer result = jdbcTemplate.queryForObject(transferSql, Integer.class,
                     transaction.getFromUserId(), transaction.getToUserId(), transaction.getTransferredMoney(), "Approved");
 
@@ -78,6 +79,8 @@ public class JdbcTransactionDao implements TransactionDao {
             return null;
         }
     }
+
+
 
 //    @Override
 //    public Transaction showTransfersById(Integer id) throws TransactionNotFoundException {

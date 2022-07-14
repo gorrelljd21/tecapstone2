@@ -2,7 +2,9 @@ package com.techelevator.tenmo.controller;
 
 import com.techelevator.tenmo.dao.TransactionDao;
 import com.techelevator.tenmo.dao.UserDao;
+import com.techelevator.tenmo.exception.NotLoggedInException;
 import com.techelevator.tenmo.exception.UserNotFoundException;
+import com.techelevator.tenmo.model.Transaction;
 import com.techelevator.tenmo.model.User;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -33,9 +35,17 @@ public class UserController {
     }
 
     //I should be able to choose from a list of users to send TE Bucks to.
-    //TODO lock down
+    //TODO implement for the usernotfound
     @GetMapping(path = "/users/{username}")
-    public int selectUser(@PathVariable String username, Principal principal) throws UserNotFoundException {
+    public int selectUser(@PathVariable String username, Principal principal, Transaction transaction) throws UserNotFoundException,
+            NotLoggedInException {
+
+        if (dao.findIdByUsername(principal.getName()) != transaction.getFromUserId()) {
+            throw new NotLoggedInException();
+        }
+
+        //here
+
         return dao.findIdByUsername(principal.getName());
     }
 }
