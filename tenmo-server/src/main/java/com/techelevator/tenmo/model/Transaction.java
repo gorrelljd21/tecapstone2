@@ -11,15 +11,17 @@ public class Transaction {
 
     private int id;
 
-//TODO find annotations for these
+//    @NotEmpty(message = "fromUserId cannot be empty.")
     private int fromUserId;
 
+//    @NotEmpty(message = "toUserId cannot be empty.")
     private int toUserId;
 
     //I can't send a zero or negative amount.
     @Positive(message = "TransferredMoney must have a positive value.")
     private BigDecimal transferredMoney;
 
+//    @NotEmpty(message = "Status cannot be empty.")
     private String status;
 
     public Transaction(){}

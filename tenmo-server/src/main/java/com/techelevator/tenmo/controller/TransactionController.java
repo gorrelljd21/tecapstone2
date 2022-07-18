@@ -68,13 +68,12 @@ public class TransactionController {
 
     //I need to be able to retrieve the details of any transfer based upon the transfer ID
     @GetMapping(path = "/transaction/{id}")
-    public Transaction transactionId(@PathVariable int id, Principal principal, Transaction transaction) throws TransactionNotFoundException,
-            NotLoggedInException {
+    public Transaction transactionId(@PathVariable int id, Principal principal, Transaction transaction)
+            throws TransactionNotFoundException, NotLoggedInException {
 
         if (userDao.findIdByUsername(principal.getName()) != transaction.getFromUserId()) {
             throw new NotLoggedInException();
         }
-
         return dao.showTransfersById(id);
     }
 }

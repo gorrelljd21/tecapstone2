@@ -35,7 +35,6 @@ public class UserController {
     }
 
     //I should be able to choose from a list of users to send TE Bucks to.
-    //TODO implement for the usernotfound
     @GetMapping(path = "/users/{username}")
     public int selectUser(@PathVariable String username, Principal principal, Transaction transaction) throws UserNotFoundException,
             NotLoggedInException {
@@ -44,7 +43,9 @@ public class UserController {
             throw new NotLoggedInException();
         }
 
-        //here
+        if(dao.findByUsername(username) == null) {
+            throw new UserNotFoundException();
+        }
 
         return dao.findIdByUsername(principal.getName());
     }
