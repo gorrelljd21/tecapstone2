@@ -45,7 +45,8 @@ public class TransactionController {
             throws TransactionNotFoundException, InsufficientFundsException, FromUserIdsMatchException, NotLoggedInException {
 
         //must be logged in to make a transfer
-        if (userDao.findIdByUsername(principal.getName()) != transaction.getFromUserId()) {
+        //need to get user name instead of user id findByUsername
+        if (userDao.findByUsername(principal.getName()).equals(transaction.getFromUsername())) {
             throw new NotLoggedInException();
         }
 
@@ -71,7 +72,9 @@ public class TransactionController {
     public Transaction transactionId(@PathVariable int id, Principal principal, Transaction transaction)
             throws TransactionNotFoundException, NotLoggedInException {
 
-        if (userDao.findIdByUsername(principal.getName()) != transaction.getFromUserId()) {
+        String user = toString();
+
+        if (!userDao.findByUsername(principal.getName()).equals(transaction.getFromUsername())) {
             throw new NotLoggedInException();
         }
         return dao.showTransfersById(id);

@@ -2,7 +2,9 @@ package com.techelevator.tenmo.dao;
 
 import com.techelevator.tenmo.exception.AccountNotFoundException;
 import com.techelevator.tenmo.exception.TransactionNotFoundException;
+import com.techelevator.tenmo.exception.UserNotFoundException;
 import com.techelevator.tenmo.model.Transaction;
+import com.techelevator.tenmo.model.User;
 import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.support.rowset.SqlRowSet;
@@ -80,24 +82,34 @@ public class JdbcTransactionDao implements TransactionDao {
         }
     }
 
+    @Override
+    public String getFromUsername(int user_id) throws UserNotFoundException {
+        User user = new User();
+        String sqlFromUser =
+                "select username" +
+                        "from tenmo_user as tu" +
+                        " join transaction as t on tu.user_id = t.source_user_id" +
+                        " where user_id = ?;";
+        SqlRowSet result = jdbcTemplate.queryForRowSet(sqlFromUser, user_id);
 
-
-//    @Override
-//    public Transaction showTransfersById(Integer id) throws TransactionNotFoundException {
-//        return null;
-//    }
-
-        private Transaction mapRowToTransaction (SqlRowSet result){
-            Transaction transaction = new Transaction();
-
-            transaction.setFromUserId(result.getInt("source_user_id"));
-            transaction.setToUserId(result.getInt("destination_user_id"));
-            transaction.setTransferredMoney(result.getBigDecimal("transfer_amount"));
-            transaction.setStatus(result.getString("status"));
-
-            return transaction;
+        if(result.next()){
+            return result.getString("username");
+        } else {
+            return null;
         }
     }
+
+    private Transaction mapRowToTransaction(SqlRowSet result) {
+        Transaction transaction = new Transaction();
+
+        transaction.setFromUserId(result.getInt("source_user_id"));
+        transaction.setToUserId(result.getInt("destination_user_id"));
+        transaction.setTransferredMoney(result.getBigDecimal("transfer_amount"));
+        transaction.setStatus(result.getString("status"));
+
+        return transaction;
+    }
+}
 
 
 

@@ -2,6 +2,7 @@ package com.techelevator.tenmo.dao;
 
 import com.techelevator.tenmo.exception.AccountNotFoundException;
 import com.techelevator.tenmo.exception.TransactionNotFoundException;
+import com.techelevator.tenmo.exception.UserNotFoundException;
 import com.techelevator.tenmo.model.Transaction;
 import com.techelevator.tenmo.model.User;
 
@@ -19,12 +20,7 @@ public interface TransactionDao {
 
     Transaction showTransfersById(int id) throws TransactionNotFoundException;
 
+    String getFromUsername(int user_id) throws UserNotFoundException;
+
 }
 
-//    public static List<User> users = new ArrayList<>();
-
-//    public TransactionDao() {
-//        if (users.size() == 0) {
-//            set.Transactions
-//        }
-//    }

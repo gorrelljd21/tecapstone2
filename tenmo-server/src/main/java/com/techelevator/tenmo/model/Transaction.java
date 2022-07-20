@@ -24,15 +24,18 @@ public class Transaction {
 //    @NotEmpty(message = "Status cannot be empty.")
     private String status;
 
+    private String fromUsername;
+
     public Transaction(){}
 
-    public Transaction(int fromUserId, int toUserId, BigDecimal transferredMoney) {
+    public Transaction(int fromUserId, int toUserId, BigDecimal transferredMoney, String fromUsername) {
         this.fromUserId = fromUserId;
         this.toUserId = toUserId;
         this.transferredMoney = transferredMoney;
+        this.fromUsername = fromUsername;
     }
 
-    public Transaction(int id, int fromUserId, int toUserId, BigDecimal transferredMoney, BigDecimal balance) {
+    public Transaction(int id, int fromUserId, int toUserId, BigDecimal transferredMoney) {
         this.id = id;
         this.fromUserId = fromUserId;
         this.toUserId = toUserId;
@@ -80,18 +83,25 @@ public class Transaction {
         this.status = status;
     }
 
+    public String getFromUsername() {
+        return fromUsername;
+    }
+
+    public void setFromUsername(String fromUsername) {
+        this.fromUsername = fromUsername;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Transaction that = (Transaction) o;
-        return id == that.id && fromUserId == that.fromUserId &&
-                toUserId == that.toUserId && Objects.equals(transferredMoney, that.transferredMoney) && Objects.equals(status, that.status);
+        return id == that.id && fromUserId == that.fromUserId && toUserId == that.toUserId && Objects.equals(transferredMoney, that.transferredMoney) && Objects.equals(status, that.status) && Objects.equals(fromUsername, that.fromUsername);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, fromUserId, toUserId, transferredMoney, status);
+        return Objects.hash(id, fromUserId, toUserId, transferredMoney, status, fromUsername);
     }
 
     @Override
@@ -102,6 +112,7 @@ public class Transaction {
                 ", toUserId=" + toUserId +
                 ", transferredMoney=" + transferredMoney +
                 ", status='" + status + '\'' +
+                ", fromUsername='" + fromUsername + '\'' +
                 '}';
     }
 }
