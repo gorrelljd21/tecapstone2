@@ -1,8 +1,7 @@
 package com.techelevator.tenmo.controller;
 
-import com.techelevator.tenmo.dao.TransactionDao;
 import com.techelevator.tenmo.dao.UserDao;
-import com.techelevator.tenmo.exception.NotLoggedInException;
+import com.techelevator.tenmo.exception.ForbiddenException;
 import com.techelevator.tenmo.exception.UserNotFoundException;
 import com.techelevator.tenmo.model.Transaction;
 import com.techelevator.tenmo.model.User;
@@ -35,18 +34,19 @@ public class UserController {
     }
 
     //I should be able to choose from a list of users to send TE Bucks to.
-    @GetMapping(path = "/users/{username}")
-    public int selectUser(@PathVariable String username, Principal principal, Transaction transaction) throws UserNotFoundException,
-            NotLoggedInException {
-
-        if (dao.findIdByUsername(principal.getName()) != transaction.getFromUserId()) {
-            throw new NotLoggedInException();
-        }
-
-        if(dao.findByUsername(username) == null) {
-            throw new UserNotFoundException();
-        }
-
-        return dao.findIdByUsername(principal.getName());
-    }
+//    @GetMapping(path = "/users/{username}")
+//    public int selectUser(@PathVariable String username, Principal principal) throws UserNotFoundException,
+//            ForbiddenException {
+//
+//        //
+//        if (dao.findIdByUsername(principal.getName()) != transaction.getFromUserId()) {
+//            throw new ForbiddenException();
+//        }
+//
+//        if(dao.findByUsername(username) == null) {
+//            throw new UserNotFoundException();
+//        }
+//
+//        return dao.findIdByUsername(principal.getName());
+//    }
 }

@@ -33,6 +33,7 @@ public class JdbcTransactionDao implements TransactionDao {
         throw new AccountNotFoundException();
     }
 
+    //TODO nuke
     public int getTransaction(int transaction_id) throws TransactionNotFoundException {
         String transactionSql =
                 "select transaction_id from transaction where transaction_id = ?;";
@@ -87,7 +88,7 @@ public class JdbcTransactionDao implements TransactionDao {
         User user = new User();
         String sqlFromUser =
                 "select username" +
-                        "from tenmo_user as tu" +
+                        " from tenmo_user as tu" +
                         " join transaction as t on tu.user_id = t.source_user_id" +
                         " where user_id = ?;";
         SqlRowSet result = jdbcTemplate.queryForRowSet(sqlFromUser, user_id);
